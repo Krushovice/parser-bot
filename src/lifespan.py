@@ -5,6 +5,9 @@ from fastapi import FastAPI, Request
 
 from bot import bot, dp
 from core.config import settings
+from utils.logger import setup_logger
+
+logger = setup_logger(__name__)
 
 
 @asynccontextmanager
@@ -16,8 +19,8 @@ async def lifespan(app: FastAPI):
         allowed_updates=dp.resolve_used_update_types(),
         drop_pending_updates=True,
     )
-    logging.info(f"Webhook set to {webhook_url}")
+    logger.info(f"Webhook set to {webhook_url}")
     yield  # Приложение работает
     # Код, выполняющийся при завершении работы приложения
     await bot.delete_webhook()
-    logging.info("Webhook removed")
+    logger.info("Webhook removed")
