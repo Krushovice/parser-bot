@@ -2,6 +2,7 @@ from aiogram import Router
 from aiogram.filters import CommandStart
 from aiogram.types import Message
 
+from markups.reply_keybords import main_keyboard
 
 router = Router(name=__name__)
 
@@ -12,7 +13,11 @@ async def cmd_start(message: Message) -> None:
     Обрабатывает команду /start.
     """
 
-    pass
+    await message.answer(
+        f"Добро пожаловать, <b>{message.from_user.full_name}</b>!\n"
+        "Чем я могу помочь вам сегодня?",
+        reply_markup=main_keyboard(user_id=message.from_user.id),
+    )
 
 
 # @router.message(F.text == "🔙 Назад")
