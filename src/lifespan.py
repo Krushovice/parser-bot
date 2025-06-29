@@ -1,7 +1,6 @@
-import logging
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 
 from bot import bot, dp
 from core.config import settings
@@ -13,7 +12,7 @@ logger = setup_logger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Код, выполняющийся при запуске приложения
-    webhook_url = settings.get_webhook_url()  # Получаем URL вебхука
+    webhook_url = settings.web.get_webhook_url  # Получаем URL вебхука
     await bot.set_webhook(
         url=webhook_url,
         allowed_updates=dp.resolve_used_update_types(),
