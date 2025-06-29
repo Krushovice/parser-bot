@@ -6,7 +6,9 @@ from core.config import settings
 
 bot = Bot(
     token=settings.bot.token,
-    default=DefaultBotProperties(parse_mode=ParseMode.HTML),
+    default=DefaultBotProperties(
+        parse_mode=ParseMode.HTML,
+    ),
 )
 dp = Dispatcher()
 

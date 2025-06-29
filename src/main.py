@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Request
+from aiogram.types import Update
 
 from bot import bot, dp
 from lifespan import lifespan
@@ -12,7 +13,9 @@ app = FastAPI(lifespan=lifespan)
 @app.post("/webhook")
 async def webhook(request: Request) -> None:
     logger.info("Received webhook request")
-    update = await request.json()  # Получаем данные из запроса
-    # Обрабатываем обновление через диспетчер (dp) и передаем в бот
+    update = Update.model_validate(
+        await request.json(),
+        context={"bot": bot},
+    )
     await dp.feed_update(bot, update)
     logger.info("Update processed")
