@@ -1,7 +1,14 @@
 from aiogram import Router, F
-from aiogram.types import CallbackQuery
+from aiogram.types import CallbackQuery, InlineKeyboardMarkup
 
-from markups.reply_keybords import CategoryCbData, CategoryActions
+from markups.reply_keybords import (
+    CategoryCbData,
+    CategoryActions,
+    job_details_keyboard,
+    JobCbData,
+    JobActions,
+    payment_kb,
+)
 from utils.logger import setup_logger
 from utils.parser import get_jobs_by_category
 
@@ -25,7 +32,27 @@ async def handle_job_details_button(
 <b>💰 Бюджет</b>: {tasks[i].get('budget')}\n
 <b>📆 Срок выполнения</b>: {tasks[i].get('deadline')}\n                 
             
-                     """
+                     """,
+                reply_markup=job_details_keyboard(
+                    description=tasks[i].get("title"),
+                    pk=i,
+                ),
             )
     except Exception as e:
         logger.error(e)
+
+
+@router.callback_query(JobCbData.filter(F.action == JobActions.respond))
+async def handle_job_respond_button(
+    call: CallbackQuery,
+    callback_data: CategoryCbData,
+):
+    await call.answer()
+    await call.message.answer(
+        text=f"""
+            <b>📝 Задание</b>: {callback_data.description}\n
+<b>Купить доступ❓</b>                 
+
+                         """,
+        reply_markup=payment_kb(pk=callback_data.id),
+    )
