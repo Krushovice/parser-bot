@@ -2,6 +2,10 @@ from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
+class UvicornConfig(BaseModel):
+    port: int = 8080
+
+
 class BotConfig(BaseModel):
     token: str
     admin_id: int
@@ -12,7 +16,6 @@ class WebConfig(BaseModel):
 
     @property
     def get_webhook_url(self) -> str:
-        """Возвращает URL вебхука с кодированием специальных символов."""
         return f"{self.base_url}/webhook"
 
 
@@ -27,6 +30,8 @@ class Settings(BaseSettings):
     bot: BotConfig
 
     web: WebConfig
+
+    uvi: UvicornConfig = UvicornConfig()
 
 
 settings = Settings()
