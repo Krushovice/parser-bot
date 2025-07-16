@@ -56,5 +56,25 @@ async def main():
         )
 
 
+async def get_jobs_by_category(category: str):
+    tasks = await fetch_tasks()
+    result = []
+    for task in tasks:
+        if task.get("CategoryFlag") == category:
+            result.append(
+                {
+                    "title": task.get("Name"),
+                    "is_actual": task.get("IsActual"),
+                    "status_flag": task.get("StatusFlag"),
+                    "budget": task.get("BudgetDescription"),
+                    "category": task.get("CategoryFlag"),
+                    "deadline": task.get("DateTimeString"),
+                    "address": task.get("Address"),
+                    "link": f"https://youdo.com{task.get('Url')}",
+                }
+            )
+    return result
+
+
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(get_jobs_by_category(category="techrepair"))
