@@ -1,4 +1,5 @@
 from enum import IntEnum, auto
+from typing import Optional
 
 from aiogram.filters.callback_data import CallbackData
 from aiogram.types import ReplyKeyboardMarkup, InlineKeyboardMarkup
@@ -15,6 +16,18 @@ class CategoryActions(IntEnum):
 class CategoryCbData(CallbackData, prefix="cat"):
     action: CategoryActions
     name: str
+
+
+class JobActions(IntEnum):
+    respond = auto()
+    buy = auto()
+    back = auto()
+
+
+class JobCbData(CallbackData, prefix="job"):
+    action: JobActions
+    id: int
+    description: str | None = None
 
 
 def main_keyboard(user_id: int) -> ReplyKeyboardMarkup:
@@ -46,6 +59,86 @@ def job_category_keyboard() -> InlineKeyboardMarkup:
         callback_data=CategoryCbData(
             action=CategoryActions.details,
             name="techrepair",
+        ),
+    )
+    kb.button(
+        text="🪚 Стройка/отделка",
+        callback_data=CategoryCbData(
+            action=CategoryActions.details,
+            name="clerical",
+        ),
+    )
+    kb.button(
+        text="🚚 Доставка",
+        callback_data=CategoryCbData(
+            action=CategoryActions.details,
+            name="trucking",
+        ),
+    )
+    kb.button(
+        text="💻 Вэб-разработка",
+        callback_data=CategoryCbData(
+            action=CategoryActions.details,
+            name="webdevelopment",
+        ),
+    )
+    kb.button(
+        text="📞 Удаленка",
+        callback_data=CategoryCbData(
+            action=CategoryActions.details,
+            name="virtualassistant",
+        ),
+    )
+    kb.button(
+        text="❤️ Уход за здоровьем",
+        callback_data=CategoryCbData(
+            action=CategoryActions.details,
+            name="healthandbeauty",
+        ),
+    )
+    kb.button(
+        text="🔖 Прочее",
+        callback_data=CategoryCbData(
+            action=CategoryActions.details,
+            name="house",
+        ),
+    )
+    kb.adjust(2)
+    return kb.as_markup(resize_keyboard=True)
+
+
+def job_details_keyboard(
+    description: str,
+    pk: int,
+) -> InlineKeyboardMarkup:
+    kb = InlineKeyboardBuilder()
+    kb.button(
+        text="✔️ Откликнуться",
+        callback_data=JobCbData(
+            action=JobActions.respond,
+            id=pk,
+            description=description[:30],
+        ),
+    )
+
+    kb.adjust(1)
+    return kb.as_markup(resize_keyboard=True)
+
+
+def payment_kb(pk: int) -> InlineKeyboardMarkup:
+    kb = InlineKeyboardBuilder()
+    kb.button(
+        text="💳 Оплатить",
+        callback_data=JobCbData(
+            action=JobActions.buy,
+            id=pk,
+        ),
+    )
+    kb.button(
+        text="🔙 Назад",
+        callback_data=JobCbData(
+            action=JobActions.back,
+            id=pk,
         ),
     )
     kb.adjust(1)
