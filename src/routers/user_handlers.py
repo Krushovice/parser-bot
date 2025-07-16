@@ -30,17 +30,9 @@ async def handle_job_button(message: Message) -> None:
     )
 
 
-# @router.message(F.text == "🔙 Назад")
-# async def cmd_back_home(message: Message) -> None:
-#     """
-#     Обрабатывает нажатие кнопки "Назад".
-#     """
-#     await greet_user(message, is_new_user=False)
-#
-#
-# @router.message(F.text == "ℹ️ О нас")
-# async def about_us(message: Message):
-#     kb = app_keyboard(
-#         user_id=message.from_user.id, first_name=message.from_user.first_name
-#     )
-#     await message.answer(get_about_us_text(), reply_markup=kb)
+@router.message(F.text == "ℹ️ О нас")
+async def about_us(message: Message):
+
+    await message.answer(
+        text="Данный ресурс носит рекомендательный характер, мы не несем ответственность за заказчиков"
+    )
