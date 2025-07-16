@@ -1,5 +1,5 @@
 from aiogram import Router, F
-from aiogram.types import CallbackQuery, InlineKeyboardMarkup
+from aiogram.types import CallbackQuery
 
 from markups.reply_keybords import (
     CategoryCbData,
@@ -45,7 +45,7 @@ async def handle_job_details_button(
 @router.callback_query(JobCbData.filter(F.action == JobActions.respond))
 async def handle_job_respond_button(
     call: CallbackQuery,
-    callback_data: CategoryCbData,
+    callback_data: JobCbData,
 ):
     await call.answer()
     await call.message.answer(
@@ -56,3 +56,19 @@ async def handle_job_respond_button(
                          """,
         reply_markup=payment_kb(pk=callback_data.id),
     )
+
+
+@router.callback_query(JobCbData.filter(F.action == JobActions.buy))
+async def handle_job_buy_button(
+    call: CallbackQuery,
+    callback_data: JobCbData,
+):
+    await call.answer()
+
+
+@router.callback_query(JobCbData.filter(F.action == JobActions.back))
+async def handle_job_buy_button(
+    call: CallbackQuery,
+    callback_data: JobCbData,
+):
+    await call.answer()

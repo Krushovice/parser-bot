@@ -77,4 +77,4 @@ async def get_jobs_by_category(category: str):
 
 
 if __name__ == "__main__":
-    asyncio.run(get_jobs_by_category(category="techrepair"))
+    asyncio.run(main())
