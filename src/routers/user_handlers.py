@@ -1,8 +1,9 @@
-from aiogram import Router
+from aiogram import Router, F
 from aiogram.filters import CommandStart
 from aiogram.types import Message
 
-from markups.reply_keybords import main_keyboard
+from markups.reply_keybords import main_keyboard, job_category_keyboard
+
 
 router = Router(name=__name__)
 
@@ -17,6 +18,15 @@ async def cmd_start(message: Message) -> None:
         f"Добро пожаловать, <b>{message.from_user.full_name}</b>!\n"
         "Чем я могу помочь вам сегодня?",
         reply_markup=main_keyboard(user_id=message.from_user.id),
+    )
+
+
+@router.message(F.text == "🌐 Предложения по работе")
+async def handle_job_button(message: Message) -> None:
+
+    await message.answer(
+        "Выберите категорию:",
+        reply_markup=job_category_keyboard(),
     )
 
 
