@@ -12,7 +12,7 @@ def main_keyboard(user_id: int) -> ReplyKeyboardMarkup:
     # )
     # kb.button(text="🌐 Предложения по работе", web_app=WebAppInfo(url=url_applications))
     kb.button(text="ℹ️ О нас")
-    if user_id == settings.ADMIN_ID:
+    if user_id == settings.bot.admin_id:
         kb.button(text="🔑 Админ панель")
     kb.adjust(1)
     return kb.as_markup(resize_keyboard=True)
