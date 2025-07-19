@@ -20,84 +20,16 @@ def generate_order_number():
     return order_number
 
 
-def calculate_expiration_date(
-    date: str,
-    duration: int | None = None,
-    flag: bool = False,
-) -> str:
-    today = datetime.datetime.today().date()
-    if flag:
-        delta = datetime.timedelta(days=7)
-        expiration_date = (today + delta).strftime("%d-%m-%Y")
-        return expiration_date
-
-    else:
-        days = 31 * duration
-    rest_of_sub = datetime.datetime.strptime(date, "%d-%m-%Y").date()
-    expiration = (rest_of_sub - today).days
-
-    if expiration > 0:
-        delta = datetime.timedelta(days=days + int(expiration))
-    else:
-        delta = datetime.timedelta(days=days)
-
-    expiration_date = (today + delta).strftime("%d-%m-%Y")
-
-    return expiration_date
-
-
-def check_time_delta(date: str | None) -> bool:
-    if not date:
-        return False
-    today = datetime.datetime.today().date()
-    rest_of_sub = datetime.datetime.strptime(date, "%d-%m-%Y").date()
-    delta = (rest_of_sub - today).days
-    if delta > 0:
-        return True
-    return False
-
-
-def set_expiration_date(
-    duration: int,
-    rest: str | None,
-    is_referrer: bool = False,
-) -> str:
-    today = datetime.datetime.today().date().strftime("%d-%m-%Y")
-    if rest and rest >= today:
-        if not is_referrer:
-            return calculate_expiration_date(rest, duration)
-        return calculate_expiration_date(date=rest, flag=True)
-
-    else:
-        if is_referrer:
-            return calculate_expiration_date(date=today, flag=True)
-        return calculate_expiration_date(date=today, duration=duration)
-
-
-def get_duration(payment) -> int:
-    try:
-        if 7500 <= payment["Amount"] <= 35000:
-            return 1
-
-        elif 40000 <= payment["Amount"] <= 80000:
-            return 3
-
-        else:
-            return 6
-    except Exception as e:
-        logger.error(f"Something wrong with payment check: {e}")
-
-
-def get_receipt(price):
+def get_receipt():
     data = {
         "Taxation": "usn_income",
-        "Email": "list90@list.ru",
+        "Email": "test@mail.ru",
         "Items": [
             {
-                "Name": "Подписка на канал",
-                "Price": price * 100,
+                "Name": "Подписка",
+                "Price": 1000,
                 "Quantity": 1.0,
-                "Amount": price * 100,
+                "Amount": 100000,
                 "PaymentMethod": "full_payment",
                 "PaymentObject": "service",
                 "Tax": "none",

@@ -1,7 +1,7 @@
 import aiohttp
 
-from app.core.config import settings
-from .payment_details import generate_token, create_token
+from core.config import settings
+from .pay_details import generate_token, create_token
 
 
 class PaymentManager:
